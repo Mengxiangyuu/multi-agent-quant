@@ -1,0 +1,58 @@
+# Multi-Agent Quantitative Trading System Configuration
+# =====================================================
+
+# -------- Backtest Settings --------
+backtest:
+  start_date: "2021-01-01"
+  end_date: "2026-01-01"
+  initial_capital: 100000
+  transaction_cost: 0.001        # 0.1% per trade
+  frequency: "daily"             # daily OHLCV
+
+# -------- Assets --------
+assets:
+  - TSLA   # 高波动标的（对比实验差异最显著）
+  - AAPL   # 趋势型大盘科技
+  - BTC-USD  # 加密货币
+
+# -------- Regime Agent --------
+regime:
+  adx_threshold: 25              # ADX > 25 → trending
+  volatility_low: 0.20           # annualized vol < 20% → low vol
+  volatility_crisis: 0.30        # annualized vol > 30% → crisis warning
+  correlation_crisis: 0.7        # cross-asset corr > 0.7 → crisis
+  lookback_days: 60
+
+# -------- Signal Agent --------
+signal:
+  # Momentum strategy
+  momentum:
+    sma_fast: 20
+    sma_slow: 50
+  # Mean reversion strategy
+  mean_revert:
+    rsi_period: 14
+    rsi_oversold: 30
+    rsi_overbought: 70
+  # LLM enhancement (set enabled: false if no API key)
+  llm:
+    enabled: false               # requires OPENAI_API_KEY
+    model: "gpt-4o-mini"
+    temperature: 0.7
+    max_tokens: 200
+
+# -------- Risk Agent --------
+risk:
+  max_single_position: 0.15      # max 15% per position
+  max_total_exposure: 0.80       # max 80% total
+  kelly_fraction: 0.5            # use half-Kelly
+  atr_stop_multiplier: 2.0       # stop = entry - 2*ATR
+  drawdown_warning: 0.05         # 5% drawdown → reduce risk
+  drawdown_stop: 0.10            # 10% drawdown → no new positions
+  drawdown_circuit: 0.15         # 15% drawdown → liquidate to minimal
+  lookback_days: 60
+
+# -------- Execution Agent --------
+execution:
+  slippage: 0.0005               # 0.05% slippage
+  order_type: "market"           # market order simulation
