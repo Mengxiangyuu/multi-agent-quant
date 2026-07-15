@@ -1,16 +1,6 @@
 """
 RiskAgent — 风控 + 资金管理，拥有一票否决权。
 
-设计原则（来自书中第 15 课）：
-  1. 硬约束不可覆盖 —— 即使其他 Agent 有「更好的理由」也不能绕过
-  2. 独立数据源 —— RiskAgent 自己计算回撤和仓位，不依赖其他 Agent
-  3. 三级回撤机制 —— 警戒(5%)→ 控制(10%)→ 熔断(15%)
-  4. Kelly 公式 + ATR 动态止损
-
-输出：
-  APPROVE → 通过
-  REDUCE  → 通过但缩小仓位（附带建议仓位）
-  REJECT  → 一票否决
 """
 
 from dataclasses import dataclass
